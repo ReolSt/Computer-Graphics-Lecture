@@ -13,6 +13,7 @@
 
 #include "GLColor.h"
 #include "GLGameObject.h"
+#include "GLCamera.h"
 
 class GLScene
 {
@@ -21,12 +22,22 @@ public:
 		: name(name),
 		  background(1.0f, 1.0f, 1.0f)
 	{
-		root = std::make_shared<GLGameObject>();
+		this->root = std::make_shared<GLGameObject>();
+		this->root->scene = std::shared_ptr<GLScene>(this);
 	}
 
 	virtual ~GLScene() { }
 
+	void SetCamera(const std::shared_ptr<GLCamera>& camera)
+	{
+		assert(camera != nullptr);
+
+		this->active_camera = camera;
+	}
+
 	std::shared_ptr<GLGameObject> root;
+	std::shared_ptr<GLCamera> active_camera;
+
 	std::string name;
 
 	GLColor background;

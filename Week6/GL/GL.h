@@ -1,0 +1,18 @@
+#pragma once
+
+#include "GLColor.h"
+#include "GLPoint.h"
+#include "GLLine.h"
+#include "GLTriangle.h"
+#include "GLShader.h"
+#include "GLMesh.h"
+#include "GLPrimitiveMeshes.h"
+#include "GLMeshRenderer.h"
+#include "GLCollision.h"
+#include "GLCollider.h"
+#include "GLGameObject.h"
+#include "GLPhysicsManager.h"
+#include "GLScene.h"
+#include "GLHelpers.h"
+#include "GLWindow.h"
+#include "GLMain.h"

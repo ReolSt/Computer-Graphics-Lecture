@@ -11,6 +11,7 @@
 #include "core/Singleton.h"
 #include "GLScene.h"
 #include "GLWindow.h"
+#include "GLKeyMapper.h"
 
 class GLCallback
 {
@@ -81,7 +82,9 @@ public:
 	void DeleteCallback(int id);
 
 	std::shared_ptr<GLWindow> window;
-	std::shared_ptr<GLScene> scene;	
+	std::shared_ptr<GLScene> scene;
+
+	GLKeyMapper key_mapper;
 private:
 	std::unordered_map<int, std::shared_ptr<GLCallback>> callbacks;
 	int unique_id_provider = 1;
@@ -134,7 +137,10 @@ void __GLUpdateScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	scene->root->Update(delta_time);
-	scene->root->Render();
+	if (scene->active_camera != nullptr)
+	{
+		scene->root->Render(scene->active_camera->ProjectionMatrix() * scene->active_camera->ViewMatrix());
+	}
 
 	glutSwapBuffers();
 
@@ -187,6 +193,8 @@ void GLMain::OnReshape(int w, int h)
 	if (this->window)
 	{
 		this->window->SetSize(w, h);
+		this->scene->active_camera->window_width = w;
+		this->scene->active_camera->window_height = h;
 	}
 }
 
@@ -194,7 +202,7 @@ void GLMain::OnKeyboard(unsigned char key, int x, int y)
 {
 	if (this->scene)
 	{
-		this->scene->root->OnKeyDown(key, x, y);
+		this->scene->root->OnKeyDown(this->key_mapper[key], x, y);
 	}
 }
 
@@ -202,7 +210,7 @@ void GLMain::OnKeyboardUp(unsigned char key, int x, int y)
 {
 	if (this->scene)
 	{
-		this->scene->root->OnKeyUp(key, x, y);
+		this->scene->root->OnKeyUp(this->key_mapper[key], x, y);
 	}
 }
 
@@ -210,7 +218,7 @@ void GLMain::OnSpecial(int key, int x, int y)
 {
 	if (this->scene)
 	{
-		this->scene->root->OnSpecial(key, x, y);
+		this->scene->root->OnKeyDown(this->key_mapper[key + 128], x, y);
 	}
 }
 
@@ -218,7 +226,7 @@ void GLMain::OnSpecialUp(int key, int x, int y)
 {
 	if (this->scene)
 	{
-		this->scene->root->OnSpecialUp(key, x, y);
+		this->scene->root->OnKeyUp(this->key_mapper[key + 128], x, y);
 	}
 }
 

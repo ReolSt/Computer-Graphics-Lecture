@@ -7,26 +7,33 @@
 #include "GLMesh.h"
 #include "GLMeshRenderer.h"
 
+class GLScene;
+
 class GLGameObject
 {
 public:
 	GLGameObject()
 	{
-		this->transform = std::make_shared<GLTransform>(*this);
+		this->transform = std::make_shared<GLTransform>(this);
 		this->mesh_renderer = std::make_shared<GLMeshRenderer>(this->transform);
 	}
 
 	GLGameObject(const std::shared_ptr<GLTransform>& parent)
 	{
-		this->transform = std::make_shared<GLTransform>(*this);
+		this->transform = std::make_shared<GLTransform>(this);
 		this->mesh_renderer = std::make_shared<GLMeshRenderer>(this->transform);
 
 		this->transform->parent = parent;
+
+		if (this->transform->parent != nullptr)
+		{
+			this->scene = this->transform->parent->game_object->scene;
+		}
 	}
 	
 	virtual ~GLGameObject() { }
 
-	virtual void OnKeyDown(unsigned char key, int x, int y)
+	virtual void OnKeyDown(const std::string& key, int x, int y)
 	{
 		for (auto& child : this->children)
 		{
@@ -34,27 +41,11 @@ public:
 		}
 	}
 
-	virtual void OnKeyUp(unsigned char key, int x, int y)
+	virtual void OnKeyUp(const std::string& key, int x, int y)
 	{
 		for (auto& child : this->children)
 		{
 			child->OnKeyUp(key, x, y);
-		}
-	}
-
-	virtual void OnSpecial(int key, int x, int y)
-	{
-		for (auto& child : this->children)
-		{
-			child->OnSpecial(key, x, y);
-		}
-	}
-
-	virtual void OnSpecialUp(int key, int x, int y)
-	{
-		for (auto& child : this->children)
-		{
-			child->OnSpecialUp(key, x, y);
 		}
 	}
 
@@ -108,18 +99,13 @@ public:
 
 	virtual void Update(GLfloat delta_time)
 	{
-		if (this->transform != nullptr)
-		{
-			this->transform->Update();
-		}
-
 		for (auto& child : this->children)
 		{
 			child->Update(delta_time);
 		}
 	};
 
-	void Render()
+	void Render(const glm::mat4& camera_matrix)
 	{
 		if (this->transform == nullptr)
 		{
@@ -133,12 +119,12 @@ public:
 
 		for (auto& child : this->children)
 		{
-			child->Render();
+			child->Render(camera_matrix);
 		}
 
 		if (this->mesh_renderer != nullptr)
 		{
-			this->mesh_renderer->Render();
+			this->mesh_renderer->Render(camera_matrix * this->transform->localToWorldMatrix());
 		}
 	}
 
@@ -154,6 +140,8 @@ public:
 
 	std::shared_ptr<GLMeshRenderer> mesh_renderer = nullptr;
 	std::shared_ptr<GLTransform> transform = nullptr;
+
+	std::shared_ptr<GLScene> scene = nullptr;
 
 	std::vector<std::shared_ptr<GLGameObject>> children;
 
