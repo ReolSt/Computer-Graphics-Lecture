@@ -42,8 +42,6 @@ public:
 		this->mesh_renderer->mesh = cube_mesh;
 
 		this->transform->Rotate(glm::radians(30.0f), glm::radians(-30.0f), 0.0f);
-
-		glEnable(GL_DEPTH_TEST);
 	}
 
 	void Update(GLfloat delta_time) override
@@ -144,13 +142,11 @@ public:
 		}
 		else if (key == "w")
 		{
-			glPolygonMode(GL_FRONT, GL_LINE);
-			glPolygonMode(GL_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else if (key == "W")
 		{
-			glPolygonMode(GL_FRONT, GL_FILL);
-			glPolygonMode(GL_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		else if (key == "s")
 		{
@@ -230,6 +226,12 @@ int main(int argc, char* argv[])
 
 	scene->root->children.push_back(std::make_shared<TransformableObject>(scene->root->transform));
 	scene->root->children.push_back(std::make_shared<AxisObject>(scene->root->transform));
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CCW);
 
 	glutMainLoop();
 }

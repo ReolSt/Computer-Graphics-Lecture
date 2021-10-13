@@ -200,5 +200,10 @@ int main(int argc, char* argv[])
 	scene->root->children.push_back(std::make_shared<TransformableObject>(scene->root->transform));
 	scene->root->children.push_back(std::make_shared<AxisObject>(scene->root->transform));
 
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	glCullFace(GL_BACK);
+
 	glutMainLoop();
 }

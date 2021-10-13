@@ -109,6 +109,10 @@ public:
 
 	void OnKeyDown(const std::string& key, int x, int y) override
 	{
+		GLGameObject::OnKeyDown(key, x, y);
+
+		std::cout << key << std::endl;
+
 		if (key == "x")
 		{
 			this->objectA->rotation_direction.x = this->objectA->rotation_direction.x == 1 ? 0 : 1;
@@ -131,7 +135,7 @@ public:
 		}
 		else if (key == "A")
 		{
-			this->objectB->rotation_direction.x = this->objectB->rotation_direction.x == - 1 ? 0 : -1;
+			this->objectB->rotation_direction.x = this->objectB->rotation_direction.x == -1 ? 0 : -1;
 		}
 		else if (key == "b")
 		{
@@ -139,7 +143,7 @@ public:
 		}
 		else if (key == "B")
 		{
-			this->objectB->rotation_direction.y = this->objectB->rotation_direction.x == -1 ? 0 : -1;
+			this->objectB->rotation_direction.y = this->objectB->rotation_direction.y == -1 ? 0 : -1;
 		}
 		else if (key == "r")
 		{
@@ -171,13 +175,11 @@ public:
 		}
 		else if (key == "w")
 		{
-			glPolygonMode(GL_FRONT, GL_LINE);
-			glPolygonMode(GL_BACK, GL_LINE);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
 		else if (key == "W")
 		{
-			glPolygonMode(GL_FRONT, GL_FILL);
-			glPolygonMode(GL_BACK, GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		else if (key == "s")
 		{
@@ -212,7 +214,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 
 	auto window = std::make_shared<GLWindow>(0, 0, 800, 800, "Training15");
-
+	
 	InitializeGLEW();
 
 	GLMain::GetInstance()->window = window;
@@ -223,12 +225,15 @@ int main(int argc, char* argv[])
 
 	scene->root->children.push_back(std::make_shared<OrbitRotator>(scene->root->transform));
 	auto camera = std::make_shared<GLCamera>(scene->root->transform, 800, 800, 90.0f);
-	camera->transform->Translate(0.0f, 0.2f, 1.5f);
+	camera->transform->Translate(0.0f, 1.0f, 2.0f);
 	camera->transform->Rotate(glm::radians(-30.0f), 0.0f, 0.0f);
 
 	scene->active_camera = camera;
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+
+	glCullFace(GL_BACK);
 
 	glutMainLoop();
 }

@@ -34,7 +34,7 @@ public:
 		glDeleteVertexArrays(1, &this->vertex_array_id);
 	}
 
-	void Render(const glm::mat4& mvp_matrix)
+	void Render()
 	{
 		glBindVertexArray(this->vertex_array_id);
 
@@ -47,7 +47,7 @@ public:
 
 		for (const auto& vertex : this->vertices)
 		{
-			auto v = mvp_matrix * glm::vec4(vertex.position, 1.0f);
+			auto v = glm::vec4(vertex.position, 1.0f);
 
 			GLfloat data[4] = { v.x, v.y, v.z, v.w };
 

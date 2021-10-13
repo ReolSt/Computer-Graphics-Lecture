@@ -7,6 +7,7 @@
 
 #include <gl/glew.h>
 #include <gl/glm/glm.hpp>
+#include <gl/glm/gtc/type_ptr.hpp>
 
 class GLShaderLoader
 {
@@ -155,8 +156,9 @@ public:
 			"layout(location = 0) in vec4 in_Position;\n"
 			"layout(location = 1) in vec4 in_Color;\n"
 			"out vec4 out_Color;\n"
+			"uniform mat4 mvp_Matrix;\n"
 			"void main() {\n"
-			"    gl_Position = in_Position;\n"
+			"    gl_Position = mvp_Matrix * in_Position;\n"
 			"    out_Color = in_Color;\n"
 			"}\n";
 
@@ -226,17 +228,17 @@ public:
 		glUniform1i(this->GetUniformLocation(name.c_str()), value);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec2<int> value)
+	void SetUniform(const std::string& name, const glm::tvec2<int>& value)
 	{
 		glUniform2i(this->GetUniformLocation(name.c_str()), value.x, value.y);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec3<int> value)
+	void SetUniform(const std::string& name, const glm::tvec3<int>& value)
 	{
 		glUniform3i(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec4<int> value)
+	void SetUniform(const std::string& name, const glm::tvec4<int>& value)
 	{
 		glUniform4i(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
 	}
@@ -246,17 +248,17 @@ public:
 		glUniform1ui(this->GetUniformLocation(name.c_str()), value);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec2<unsigned int> value)
+	void SetUniform(const std::string& name, const glm::tvec2<unsigned int>& value)
 	{
 		glUniform2ui(this->GetUniformLocation(name.c_str()), value.x, value.y);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec3<unsigned int> value)
+	void SetUniform(const std::string& name, const glm::tvec3<unsigned int>& value)
 	{
 		glUniform3ui(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec4<unsigned int> value)
+	void SetUniform(const std::string& name, const glm::tvec4<unsigned int>& value)
 	{
 		glUniform4ui(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
 	}
@@ -266,17 +268,17 @@ public:
 		glUniform1f(this->GetUniformLocation(name.c_str()), value);
 	}
 
-	void SetUniform(const std::string& name, glm::vec2 value)
+	void SetUniform(const std::string& name, const glm::tvec2<GLfloat>& value)
 	{
 		glUniform2f(this->GetUniformLocation(name.c_str()), value.x, value.y);
 	}
 
-	void SetUniform(const std::string& name, glm::vec3 value)
+	void SetUniform(const std::string& name, const glm::tvec3<GLfloat>& value)
 	{
 		glUniform3f(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec4<GLfloat> value)
+	void SetUniform(const std::string& name, const glm::tvec4<GLfloat>& value)
 	{
 		glUniform4f(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
 	}
@@ -286,19 +288,109 @@ public:
 		glUniform1d(this->GetUniformLocation(name.c_str()), value);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec2<GLdouble> value)
+	void SetUniform(const std::string& name, const glm::tvec2<GLdouble>& value)
 	{
 		glUniform2d(this->GetUniformLocation(name.c_str()), value.x, value.y);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec3<GLdouble> value)
+	void SetUniform(const std::string& name, const glm::tvec3<GLdouble>& value)
 	{
 		glUniform3d(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z);
 	}
 
-	void SetUniform(const std::string& name, glm::tvec4<GLdouble> value)
+	void SetUniform(const std::string& name, const glm::tvec4<GLdouble>& value)
 	{
 		glUniform4d(this->GetUniformLocation(name.c_str()), value.x, value.y, value.z, value.w);
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x2<GLfloat> value)
+	{
+		glUniformMatrix2fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x3<GLfloat> value)
+	{
+		glUniformMatrix2x3fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x4<GLfloat> value)
+	{
+		glUniformMatrix2x4fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x2<GLfloat> value)
+	{
+		glUniformMatrix3x2fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x3<GLfloat> value)
+	{
+		glUniformMatrix3fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x4<GLfloat> value)
+	{
+		glUniformMatrix3x4fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x2<GLfloat> value)
+	{
+		glUniformMatrix4x2fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x3<GLfloat> value)
+	{
+		glUniformMatrix4x3fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x4<GLfloat> value)
+	{
+		glUniformMatrix4fv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x2<GLdouble> value)
+	{
+		glUniformMatrix2dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x3<GLdouble> value)
+	{
+		glUniformMatrix2x3dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat2x4<GLdouble> value)
+	{
+		glUniformMatrix2x4dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x2<GLdouble> value)
+	{
+		glUniformMatrix3x2dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x3<GLdouble> value)
+	{
+		glUniformMatrix3dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat3x4<GLdouble> value)
+	{
+		glUniformMatrix3x4dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x2<GLdouble> value)
+	{
+		glUniformMatrix4x2dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x3<GLdouble> value)
+	{
+		glUniformMatrix4x3dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+	}
+
+	void SetUniform(const std::string& name, glm::tmat4x4<GLdouble> value)
+	{
+		glUniformMatrix4dv(this->GetUniformLocation(name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 	}
 
 	void Use()

@@ -42,7 +42,7 @@ public:
 	{
 		if (this->parent != nullptr)
 		{
-			return this->local_rotation * this->parent->Rotation();
+			return this->parent->Rotation() * this->local_rotation;
 		}
 
 		return this->local_rotation;
@@ -52,7 +52,7 @@ public:
 	{
 		if (this->parent != nullptr)
 		{
-			return this->local_scale * this->parent->Scale();
+			return this->parent->Scale() * this->local_scale;
 		}
 
 		return this->local_scale;
@@ -84,7 +84,7 @@ public:
 
 	void SetEulerAngles(GLfloat x, GLfloat y, GLfloat z)
 	{
-		this->local_rotation = glm::normalize(glm::quat(glm::vec3(x, y, z)));
+		this->local_rotation = glm::quat(glm::vec3(x, y, z));
 	}
 
 	void SetScale(GLfloat x, GLfloat y, GLfloat z)
@@ -96,7 +96,7 @@ public:
 
 	glm::vec3 EulerAngles()
 	{
-		return glm::eulerAngles(this->local_rotation);
+		return glm::eulerAngles(this->Rotation());
 	}
 
 	glm::mat4 localToWorldMatrix()

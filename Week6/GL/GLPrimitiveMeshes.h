@@ -158,17 +158,17 @@ public:
 
 		this->vertices.insert(this->vertices.end(), { v0, v1, v2, v3, v4, v5, v6, v7 });
 
-		this->indices.insert(this->indices.end(), { 0, 1, 2 });
+		this->indices.insert(this->indices.end(), { 2, 1, 0 });
 		this->indices.insert(this->indices.end(), { 1, 2, 3 });
 		this->indices.insert(this->indices.end(), { 4, 5, 6 });
-		this->indices.insert(this->indices.end(), { 5, 6, 7 });
-		this->indices.insert(this->indices.end(), { 0, 2, 4 });
+		this->indices.insert(this->indices.end(), { 7, 6, 5 });
+		this->indices.insert(this->indices.end(), { 4, 2, 0 });
 		this->indices.insert(this->indices.end(), { 2, 4, 6 });
 		this->indices.insert(this->indices.end(), { 1, 3, 5 });
-		this->indices.insert(this->indices.end(), { 3, 5, 7 });
+		this->indices.insert(this->indices.end(), { 7, 5, 3 });
 		this->indices.insert(this->indices.end(), { 0, 1, 4 });
-		this->indices.insert(this->indices.end(), { 1, 4, 5 });
-		this->indices.insert(this->indices.end(), { 2, 3, 6 });
+		this->indices.insert(this->indices.end(), { 5, 4, 1 });
+		this->indices.insert(this->indices.end(), { 6, 3, 2 });
 		this->indices.insert(this->indices.end(), { 3, 6, 7 });
 	}
 };
@@ -209,7 +209,7 @@ public:
 				if (r < rings - 1)
 				{
 					this->indices.insert(this->indices.end(), { index_offset + s, index_offset + next_s, next_index_offset + s });
-					this->indices.insert(this->indices.end(), { index_offset + next_s, next_index_offset + s, next_index_offset + next_s });
+					this->indices.insert(this->indices.end(), { next_index_offset + s, index_offset + next_s, next_index_offset + next_s });
 				}
 			}
 		}
@@ -223,8 +223,8 @@ public:
 
 		for (unsigned int s = 0; s < segments; ++s)
 		{
-			this->indices.insert(this->indices.end(), { index_offset, index_offset - s - 1, index_offset - (s + 1) % segments - 1 });
-			this->indices.insert(this->indices.end(), { index_offset + 1, s, (s + 1) % segments });
+			this->indices.insert(this->indices.end(), { index_offset - s - 1, index_offset, index_offset - (s + 1) % segments - 1 });
+			this->indices.insert(this->indices.end(), { s, index_offset + 1, (s + 1) % segments });
 		}
 	}
 };
@@ -266,7 +266,7 @@ public:
 
 			if (i > 0)
 			{
-				this->indices.insert(this->indices.end(), { 0, i, i + 1 });
+				this->indices.insert(this->indices.end(), { i, 0, i + 1 });
 			}
 			if (i > 1)
 			{
@@ -300,9 +300,9 @@ public:
 			unsigned int next = (i + 1) % vertices;
 
 			this->indices.insert(this->indices.end(), { 0, i * 2, next * 2 });
-			this->indices.insert(this->indices.end(), { 1, i * 2 + 1, next * 2 + 1 });
+			this->indices.insert(this->indices.end(), { next * 2 + 1, i * 2 + 1, 1 });
 			this->indices.insert(this->indices.end(), { i * 2, i * 2 + 1, next * 2 });
-			this->indices.insert(this->indices.end(), { i * 2 + 1, next * 2, next * 2 + 1});
+			this->indices.insert(this->indices.end(), { next * 2 + 1, next * 2, i * 2 + 1 });
 		}
 	}
 };

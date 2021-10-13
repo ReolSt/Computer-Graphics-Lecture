@@ -50,8 +50,19 @@ public:
 	{
 		for (char ch = 32; ch < 127; ++ch)
 		{
-			this->key_mapper[ch] = std::string(1, ch);
-			this->keycode_mapper[std::string(1, ch)] = ch;
+			std::string key_string = std::string(1, ch);
+
+			if (ch == 9)
+			{
+				key_string = "Tab";
+			}
+			else if (ch == ' ')
+			{
+				key_string = "Space";
+			}
+
+			this->key_mapper[ch] = key_string;
+			this->keycode_mapper[key_string] = ch;
 		}
 	}
 

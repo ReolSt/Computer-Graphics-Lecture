@@ -29,12 +29,10 @@ public:
 
 	glm::mat4 ViewMatrix()
 	{
-
-		glm::mat4 scale_matrix = glm::scale(this->transform->Scale());
 		glm::mat4 rotation_matrix = glm::toMat4(glm::inverse(this->transform->Rotation()));
 		glm::mat4 translation_matrix = glm::translate(glm::mat4(1.0f), -this->transform->Position());
 
-		return translation_matrix * rotation_matrix * scale_matrix;
+		return rotation_matrix * translation_matrix;
 	}
 
 	glm::mat4 ProjectionMatrix()

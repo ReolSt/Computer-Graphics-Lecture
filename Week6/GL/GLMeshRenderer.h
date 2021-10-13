@@ -27,7 +27,9 @@ public:
 		}
 
 		this->shader->Use();
-		this->mesh->Render(mvp_matrix);
+		this->shader->SetUniform("mvp_Matrix", mvp_matrix);
+
+		this->mesh->Render();
 	}
 
 	std::shared_ptr<GLMesh> mesh = nullptr;
