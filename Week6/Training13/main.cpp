@@ -43,37 +43,37 @@ public:
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 2, 1, 2, 3 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 2, 1, 0, 1, 2, 3 });
 		}
 		else if (key == "2")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 4, 5, 6, 5, 6, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 4, 5, 6, 7, 6, 5 });
 		}
 		else if (key == "3")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 2, 4, 2, 4, 6 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 4, 2, 0, 2, 4, 6 });
 		}
 		else if (key == "4")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 1, 3, 5, 3, 5, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 1, 3, 5, 7, 5, 3 });
 		}
 		else if (key == "5")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 4, 1, 4, 5 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 4, 5, 4, 1 });
 		}
 		else if (key == "6")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 2, 3, 6, 3, 6, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 6, 3, 2, 3, 6, 7 });
 		}
 		else if (key == "7")
 		{
@@ -103,19 +103,19 @@ public:
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 2, 1, 2, 3, 4, 5, 6, 5, 6, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 2, 1, 0, 1, 2, 3, 4, 5, 6, 7, 6, 5 });
 		}
 		else if (key == "b")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 2, 4, 2, 4, 6, 1, 3, 5, 3, 5, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 4, 2, 0, 2, 4, 6, 1, 3, 5, 7, 5, 3 });
 		}
 		else if (key == "c")
 		{
 			this->mesh_renderer->mesh = this->cube_mesh;
 			this->cube_mesh->indices.clear();
-			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 4, 1, 4, 5, 2, 3, 6, 3, 6, 7 });
+			this->cube_mesh->indices.insert(this->cube_mesh->indices.end(), { 0, 1, 4, 5, 4, 1, 6, 3, 2, 3, 6, 7 });
 		}
 		else if (key == "e")
 		{
@@ -201,9 +201,6 @@ int main(int argc, char* argv[])
 	scene->root->children.push_back(std::make_shared<AxisObject>(scene->root->transform));
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-
-	glCullFace(GL_BACK);
 
 	glutMainLoop();
 }

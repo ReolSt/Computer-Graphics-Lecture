@@ -30,7 +30,7 @@ public:
 
 			std::cout << glm::cos(rads) * rads << std::endl;
 
-			GLPoint p({ glm::cos(rads) * rads / 5.0f, 0.0f, glm::sin(rads) * rads / 5.0f }, black);
+			GLPoint p({ glm::cos(rads) * rads / 10.0f, 0.0f, glm::sin(rads) * rads / 10.0f }, black);
 
 			mesh->vertices.push_back(p);
 			mesh->indices.insert(mesh->indices.end(), { i - 1, i });
@@ -166,14 +166,30 @@ public:
 			this->transform->Rotate(0.0f, this->orbit_direction * delta_time, 0.0f);
 		}
 
-		if (this->spiral->visible)
+		if (this->spiral_animation_direction)
 		{
 			auto pi = glm::pi<GLfloat>();
-			GLfloat rads = this->spiral_animation_time / 100.0f * pi * 8.0f;
+			GLfloat rads = this->spiral_animation_time * pi * 8.0f;
 
-			this->objectC->transform->local_position = glm::vec3(glm::cos(rads) * rads / 5.0f, 0.0f, glm::sin(rads) * rads / 5.0f);
-			++this->spiral_animation_time;
+			this->objectC->transform->local_position = glm::vec3(glm::cos(rads) * rads / 10.0f, 0.0f, glm::sin(rads) * rads / 10.0f );
+			this->spiral_animation_time += delta_time * this->spiral_animation_speed * this->spiral_animation_direction;
+
+			if (this->spiral_animation_time < 0.0f)
+			{
+				this->ResetSpiralAnimation();
+			}
 		}
+	}
+
+	void ResetSpiralAnimation()
+	{
+		this->spiral->visible = false;
+		this->objectC->visible = false;
+
+		this->spiral_animation_time = 0;
+		this->objectC->transform->local_position = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		this->spiral_animation_direction = 0;
 	}
 
 	void OnKeyDown(const std::string& key, int x, int y) override
@@ -228,11 +244,11 @@ public:
 		{
 			this->objectA->rotation_direction.y = this->objectA->rotation_direction.y == -1 ? 0 : -1;
 		}
-		else if (key == "a")
+		else if (key == "z")
 		{
 			this->objectB->rotation_direction.x = this->objectB->rotation_direction.x == 1 ? 0 : 1;
 		}
-		else if (key == "A")
+		else if (key == "Z")
 		{
 			this->objectB->rotation_direction.x = this->objectB->rotation_direction.x == -1 ? 0 : -1;
 		}
@@ -246,18 +262,30 @@ public:
 		}
 		else if (key == "r")
 		{
-			this->spiral_animation_time = 0;
-			this->objectC->transform->local_position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-			if (this->spiral->visible)
+			if (this->spiral_animation_direction == 1)
 			{
-				this->spiral->visible = false;
-				this->objectC->visible = false;
+				this->ResetSpiralAnimation();
 			}
 			else
 			{
 				this->spiral->visible = true;
 				this->objectC->visible = true;
+
+				this->spiral_animation_direction = 1;
+			}
+		}
+		else if (key == "R")
+		{
+			if (this->spiral_animation_direction == -1)
+			{
+				this->ResetSpiralAnimation();
+			}
+			else
+			{
+				this->spiral->visible = true;
+				this->objectC->visible = true;
+
+				this->spiral_animation_direction = -1;
 			}
 		}
 		else if (key == "t")
@@ -310,11 +338,7 @@ public:
 			this->objectA->rotation_direction = glm::tvec3<int>(0, 0, 0);
 			this->objectB->rotation_direction = glm::tvec3<int>(0, 0, 0);
 
-			this->spiral_animation_time = 0;
-			this->objectC->transform->local_position = glm::vec3(0.0f, 0.0f, 0.0f);
-
-			this->spiral->visible = false;
-			this->objectC->visible = false;
+			this->ResetSpiralAnimation();
 
 			this->scale_direction = 0;
 		}
@@ -324,35 +348,19 @@ public:
 	{
 		GLGameObject::OnKeyUp(key, x, y);
 
-		if (key == "Left")
+		if (key == "Left" || key == "Right")
 		{
 			this->objectA->translation_direction.x = 0;
 		}
-		else if (key == "Right")
-		{
-			this->objectA->translation_direction.x = 0;
-		}
-		else if (key == "Down")
+		else if (key == "Down" || key == "Up")
 		{
 			this->objectA->translation_direction.z = 0;
 		}
-		else if (key == "Up")
-		{
-			this->objectA->translation_direction.z = 0;
-		}
-		else if (key == "a")
+		else if (key == "a" || key == "d")
 		{
 			this->objectB->translation_direction.x = 0;
 		}
-		else if (key == "d")
-		{
-			this->objectB->translation_direction.x = 0;
-		}
-		else if (key == "s")
-		{
-			this->objectB->translation_direction.z = 0;
-		}
-		else if (key == "w")
+		else if (key == "s" || key == "w")
 		{
 			this->objectB->translation_direction.z = 0;
 		}
@@ -412,7 +420,10 @@ public:
 	int state = 0;
 
 	int scale_direction = 0;
-	int spiral_animation_time = 0;
+
+	float spiral_animation_time = 0;
+	float spiral_animation_speed = 0.1f;
+	int spiral_animation_direction = 0;
 
 	int orbit_direction = 0;
 };
@@ -434,8 +445,8 @@ int main(int argc, char* argv[])
 
 	scene->root->children.push_back(std::make_shared<OrbitRotator>(scene->root->transform));
 	auto camera = std::make_shared<GLCamera>(scene->root->transform, 800, 800, 90.0f);
-	camera->transform->Translate(0.0f, 1.0f, 2.0f);
-	camera->transform->Rotate(glm::radians(-30.0f), 0.0f, 0.0f);
+	camera->transform->Translate(0.0f, 2.0f, 2.0f);
+	camera->transform->Rotate(glm::radians(-60.0f), 0.0f, 0.0f);
 
 	scene->active_camera = camera;
 

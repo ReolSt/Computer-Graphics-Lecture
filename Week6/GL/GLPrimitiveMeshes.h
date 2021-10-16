@@ -108,7 +108,7 @@ public:
 		this->vertices.insert(this->vertices.end(), { v0, v1, v2, v3 });
 
 		this->indices.insert(this->indices.end(), { 0, 1, 2 });
-		this->indices.insert(this->indices.end(), { 1, 2, 3 });
+		this->indices.insert(this->indices.end(), { 1, 3, 2 });
 	}
 };
 
