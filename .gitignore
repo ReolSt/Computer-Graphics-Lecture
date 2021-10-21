@@ -1,0 +1,10 @@
+Library/*
+
+**/ipch/
+**/Debug/
+**/Release/
+
+*.zip
+*.7z
+*.obj
+*.exe
