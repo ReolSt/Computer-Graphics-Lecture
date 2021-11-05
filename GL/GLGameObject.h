@@ -31,6 +31,11 @@ public:
 	
 	virtual ~GLGameObject() { }
 
+	virtual void Initialize()
+	{
+		this->bInitialized = true;
+	}
+
 	virtual void OnKeyDown(const std::string& key, int x, int y)
 	{
 		for (auto& child : this->Children)
@@ -224,6 +229,8 @@ public:
 private:
 	bool bVisible = true;
 	std::string Layer = "Default";
+
+	bool bInitialized = false;
 };
 
 #define GConstructor(CLASSNAME, ...) \
