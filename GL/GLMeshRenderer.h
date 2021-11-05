@@ -19,10 +19,16 @@ public:
 		this->Shader = GLShader::GetDefaultShader();
 	}
 
-	void Render(const glm::mat4& MVPMatrix)
+	void Update()
+	{
+		this->Mesh->Update();
+	}
+
+	void Render(const glm::mat4& modelMatrix, const glm::mat4& cameraMatrix)
 	{
 		this->Shader->Use();
-		this->Shader->SetUniform("MVPMatrix", MVPMatrix);
+		this->Shader->SetUniform("modelMatrix", modelMatrix);
+		this->Shader->SetUniform("cameraMatrix", cameraMatrix);
 
 		this->Mesh->Render();
 	}

@@ -45,7 +45,7 @@ public:
 		glDeleteVertexArrays(1, &this->VertexArrayId);
 	}
 
-	void Render()
+	void UpdateVertexBuffer()
 	{
 		glBindVertexArray(this->VertexArrayId);
 
@@ -68,6 +68,13 @@ public:
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(0);
 
+		glBindVertexArray(0);
+	}
+
+	void UpdateColorBuffer()
+	{
+		glBindVertexArray(this->VertexArrayId);
+
 		GLsizei ColorBufferSize = COLOR_DATA_SIZE * this->Vertices.size();
 		GLintptr ColorBufferOffset = 0;
 
@@ -86,6 +93,13 @@ public:
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glEnableVertexAttribArray(1);
 
+		glBindVertexArray(0);
+	}
+
+	void UpdateIndexBuffer()
+	{
+		glBindVertexArray(this->VertexArrayId);
+
 		GLsizei IndexBufferSIze = INDEX_DATA_SIZE * this->Indices.size();
 		GLintptr IndexBufferOffset = 0;
 
@@ -98,7 +112,30 @@ public:
 			IndexBufferOffset += INDEX_DATA_SIZE;
 		}
 
-		this->Draw();
+		glBindVertexArray(0);
+	}
+
+	void Update()
+	{
+		this->UpdateVertexBuffer();
+		this->UpdateColorBuffer();
+		this->UpdateIndexBuffer();
+	}
+
+	virtual void Render()
+	{
+		if (this->Updated)
+		{
+			this->Update();
+			this->Updated = false;
+		}
+
+		glBindVertexArray(this->VertexArrayId);
+
+		if (this->Indices.size() > 0)
+		{
+			glDrawElements((GLenum)this->DrawMode, this->Indices.size(), GL_UNSIGNED_INT, (GLvoid*)0);
+		}
 
 		glBindVertexArray(0);
 	}
@@ -113,17 +150,114 @@ public:
 		return this->DrawMode;
 	}
 
+	GLPoint GetVertex(int arrayIndex)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Vertices.size());
+
+		return this->Vertices.at(arrayIndex);
+	}
+
+	GLPoint SetVertex(int arrayIndex, const GLPoint& vertex)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Vertices.size());
+
+		this->Vertices.at(arrayIndex) = vertex;
+
+		this->Updated = true;
+	}
+
+	void AddVertex(const GLPoint& vertex)
+	{
+		this->Vertices.push_back(vertex);
+
+		this->Updated = true;
+	}
+
+	void AddVertices(const std::initializer_list<GLPoint>& vertices)
+	{
+		this->Vertices.insert(this->Vertices.end(), vertices);
+
+		this->Updated = true;
+	}
+
+	void RemoveVertex(int arrayIndex)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Vertices.size());
+
+		this->Vertices.erase(this->Vertices.begin() + arrayIndex);
+
+		this->Updated = true;
+	}
+
+	void RemoveVertices(const std::initializer_list<int>& vertexIndices)
+	{
+		for (auto index : vertexIndices)
+		{
+			this->RemoveVertex(index);
+		}
+
+		this->Updated = true;
+	}
+
+	void ClearVertices()
+	{
+		this->Vertices.clear();
+
+		this->Updated = true;
+	}
+
+	GLuint GetIndex(int arrayIndex)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Indices.size());
+
+		return this->Indices.at(arrayIndex);
+	}
+
+	GLPoint SetIndex(int arrayIndex, GLuint index)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Indices.size());
+
+		this->Indices.at(arrayIndex) = index;
+
+		this->Updated = true;
+	}
+
+
+	void AddIndex(GLuint index)
+	{
+		this->Indices.push_back(index);
+
+		this->Updated = true;
+	}
+
+	void AddIndices(const std::initializer_list<GLuint>& indices)
+	{
+		for (auto index : indices)
+		{
+			this->AddIndex(index);
+		}
+
+		this->Updated = true;
+	}
+
+	void RemoveIndex(int arrayIndex)
+	{
+		assert(arrayIndex >= 0 && arrayIndex < this->Indices.size());
+		
+		this->Indices.erase(this->Indices.begin() + arrayIndex);
+
+		this->Updated = true;
+	}
+
+	void ClearIndices()
+	{
+		this->Indices.clear();
+
+		this->Updated = true;
+	}
+
 	std::vector<GLPoint> Vertices;
 	std::vector<GLuint> Indices;
-
-protected:
-	virtual void Draw()
-	{
-		if (this->Indices.size() > 0)
-		{
-			glDrawElements((GLenum)this->DrawMode, this->Indices.size(), GL_UNSIGNED_INT, (GLvoid*)0);
-		}
-	}
 
 private:
 	unsigned int VertexArrayId;
@@ -132,4 +266,6 @@ private:
 	unsigned int IndexBufferId;
 
 	GLMeshDrawMode DrawMode = GLMeshDrawMode::Triangle;
+
+	bool Updated = false;
 };

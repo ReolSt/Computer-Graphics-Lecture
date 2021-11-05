@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <unordered_map>
 
 #include <gl/glew.h>
 #include <gl/glm/glm.hpp>
@@ -158,9 +159,10 @@ public:
 			"layout(location = 0) in vec4 in_Position;\n"
 			"layout(location = 1) in vec4 in_Color;\n"
 			"out vec4 out_Color;\n"
-			"uniform mat4 MVPMatrix;\n"
+			"uniform mat4 cameraMatrix;\n"
+			"uniform mat4 modelMatrix;\n"
 			"void main() {\n"
-			"    gl_Position = MVPMatrix * in_Position;\n"
+			"    gl_Position = cameraMatrix * modelMatrix * in_Position;\n"
 			"    out_Color = in_Color;\n"
 			"}\n";
 
@@ -216,7 +218,12 @@ public:
 
 	int GetUniformLocation(const std::string& name)
 	{
-		return glGetUniformLocation(this->GetId(), name.c_str());
+		if (this->UniformLocations.find(name) == this->UniformLocations.end())
+		{
+			this->UniformLocations[name] = glGetUniformLocation(this->GetId(), name.c_str());
+		}
+
+		return this->UniformLocations[name];
 	}
 
 	template <typename T>
@@ -425,4 +432,6 @@ protected:
 
 private:
 	unsigned int Id;
+
+	std::unordered_map<std::string, int> UniformLocations;
 };

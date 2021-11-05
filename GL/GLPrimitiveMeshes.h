@@ -13,8 +13,8 @@ public:
 		GLPoint v0({ -0.5f, 0.0f, 0.0f }, color);
 		GLPoint v1({ 0.5f, 0.0f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1 });
-		this->Indices.insert(this->Indices.end(), { 0, 1 });
+		this->AddVertices({ v0, v1 });
+		this->AddIndices({ 0, 1 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -29,8 +29,8 @@ public:
 		GLPoint v0({ -0.5f, 0.0f, 0.0f }, color);
 		GLPoint v1({ 0.5f, 0.0f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1 });
-		this->Indices.insert(this->Indices.end(), { 0, 1 });
+		this->AddVertices({ v0, v1 });
+		this->AddIndices({ 0, 1 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -47,8 +47,8 @@ public:
 		GLPoint v2({ 0.0f, -0.5f, 0.0f }, color);
 		GLPoint v3({ 0.0f, 0.5f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3 });
-		this->Indices.insert(this->Indices.end(), { 0, 1, 2, 3 });
+		this->AddVertices({ v0, v1, v2, v3 });
+		this->AddIndices({ 0, 1, 2, 3 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -67,8 +67,8 @@ public:
 		GLPoint v4({ 0.0f, 0.0f, -0.5f }, color);
 		GLPoint v5({ 0.0f, 0.0f, 0.5f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3, v4, v5 });
-		this->Indices.insert(this->Indices.end(), { 0, 1, 2, 3, 4, 5 });
+		this->AddVertices({ v0, v1, v2, v3, v4, v5 });
+		this->AddIndices({ 0, 1, 2, 3, 4, 5 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -84,8 +84,8 @@ public:
 		GLPoint v1({ 0.5f, -0.5f, 0.0f }, color);
 		GLPoint v2({ 0.0f, 0.5f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2 });
-		this->Indices.insert(this->Indices.end(), { 0, 1, 1, 2, 2, 0 });
+		this->AddVertices({ v0, v1, v2 });
+		this->AddIndices({ 0, 1, 1, 2, 2, 0 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -102,9 +102,9 @@ public:
 		GLPoint v2({ -0.5f, 0.5f, 0.0f }, color);
 		GLPoint v3({ 0.5f, 0.5f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3 });
+		this->AddVertices({ v0, v1, v2, v3 });
 
-		this->Indices.insert(this->Indices.end(), { 0, 1, 1, 2, 2, 3, 3, 0 });
+		this->AddIndices({ 0, 1, 1, 3, 3, 2, 2, 0 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -127,8 +127,8 @@ public:
 
 			GLPoint v({ glm::cos(rads) * radius, glm::sin(rads) * radius, 0.0f }, color);
 
-			this->Vertices.push_back(v);
-			this->Indices.insert(this->Indices.end(), { i, (i + 1) % vertices });
+			this->AddVertex(v);
+			this->AddIndices({ i, (i + 1) % vertices });
 		}
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
@@ -150,14 +150,14 @@ public:
 		GLPoint v6({ -0.5f, 0.5f, 0.5f }, color);
 		GLPoint v7({ 0.5f, 0.5f, 0.5f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3, v4, v5, v6, v7 });
+		this->AddVertices({ v0, v1, v2, v3, v4, v5, v6, v7 });
 
-		this->Indices.insert(this->Indices.end(), { 0, 1, 1, 3, 3, 2, 2, 0 });
-		this->Indices.insert(this->Indices.end(), { 4, 5, 5, 7, 7, 6, 6, 4 });
-		this->Indices.insert(this->Indices.end(), { 0, 2, 2, 6, 6, 4, 4, 0 });
-		this->Indices.insert(this->Indices.end(), { 1, 3, 3, 7, 7, 5, 5, 1 });
-		this->Indices.insert(this->Indices.end(), { 0, 1, 1, 5, 5, 4, 4, 0 });
-		this->Indices.insert(this->Indices.end(), { 2, 3, 3, 7, 7, 6, 6, 2 });
+		this->AddIndices({ 0, 1, 1, 3, 3, 2, 2, 0 });
+		this->AddIndices({ 4, 5, 5, 7, 7, 6, 6, 4 });
+		this->AddIndices({ 0, 2, 2, 6, 6, 4, 4, 0 });
+		this->AddIndices({ 1, 3, 3, 7, 7, 5, 5, 1 });
+		this->AddIndices({ 0, 1, 1, 5, 5, 4, 4, 0 });
+		this->AddIndices({ 2, 3, 3, 7, 7, 6, 6, 2 });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
@@ -176,7 +176,7 @@ public:
 
 		GLPoint top({ 0.0f, 0.5f, 0.0f }, color);
 
-		this->Vertices.push_back(top);
+		this->AddVertex(top);
 
 		for (unsigned int i = 0; i < vertices; ++i)
 		{
@@ -184,62 +184,86 @@ public:
 
 			GLPoint v({ glm::cos(rads) * radius, -0.5f, glm::sin(rads) * radius }, color);
 
-			this->Vertices.push_back(v);
+			this->AddVertex(v);
 
 			if (i > 0)
 			{
-				this->Indices.insert(this->Indices.end(), { 0, i + 1 });
+				this->AddIndices({ 0, i + 1 });
 			}
 			if (i > 1)
 			{
-				this->Indices.insert(this->Indices.end(), { i, i + 1 });
+				this->AddIndices({ i, i + 1 });
 			}
 		}
-		this->Indices.insert(this->Indices.end(), { 1, vertices });
+		this->AddIndices({ 1, vertices });
 
 		this->SetDrawMode(GLMeshDrawMode::Line);
 	}
 };
 
-class GLTriangleMesh : public GLMesh
+class GL2DMesh : public GLMesh
+{
+public:
+	GL2DMesh()
+		: GLMesh()
+	{
+
+	}
+
+	void Render() override
+	{
+		bool faceCullingEnabled = glIsEnabled(GL_CULL_FACE);
+
+		glDisable(GL_CULL_FACE);
+
+		GLMesh::Render();
+
+		if (faceCullingEnabled)
+		{
+			glEnable(GL_CULL_FACE);
+		}
+	}
+};
+
+class GLTriangleMesh : public GL2DMesh
 {
 public:
 	GLTriangleMesh(const GLColor& color = GLColor(1.0f, 1.0f, 1.0f))
-		: GLMesh()
+		: GL2DMesh()
 	{
 		GLPoint v0({ -0.5f, -0.5f, 0.0f }, color);
 		GLPoint v1({ 0.5f, -0.5f, 0.0f }, color);
 		GLPoint v2({ 0.0f, 0.5f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2 });
+		this->AddVertices({ v0, v1, v2 });
 
-		this->Indices.insert(this->Indices.end(), { 0, 1, 2 });
+		this->AddIndices({ 0, 1, 2 });
 	}
 };
 
-class GLRectangleMesh : public GLMesh
+class GLRectangleMesh : public GL2DMesh
 {
 public:
 	GLRectangleMesh(const GLColor& color = GLColor(1.0f, 1.0f, 1.0f))
-		: GLMesh()
+		: GL2DMesh()
 	{
 		GLPoint v0({ -0.5f, -0.5f, 0.0f }, color);
 		GLPoint v1({ 0.5f, -0.5f, 0.0f }, color);
 		GLPoint v2({ -0.5f, 0.5f, 0.0f }, color);
 		GLPoint v3({ 0.5f, 0.5f, 0.0f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3 });
+		this->AddVertices({ v0, v1, v2, v3 });
 
-		this->Indices.insert(this->Indices.end(), { 0, 1, 2 });
-		this->Indices.insert(this->Indices.end(), { 1, 3, 2 });
+		this->AddIndices({ 0, 1, 2 });
+		this->AddIndices({ 1, 3, 2 });
 	}
 };
 
-class GLCircleMesh : public GLMesh
+class GLCircleMesh : public GL2DMesh
 {
 public:
 	GLCircleMesh(unsigned int vertices = 32, const GLColor& color = GLColor(1.0f, 1.0f, 1.0f))
-		: GLMesh()
+		: GL2DMesh()
 	{
 		assert(vertices >= 3);
 
@@ -252,10 +276,10 @@ public:
 
 			GLPoint v({ glm::cos(rads) * radius, glm::sin(rads) * radius, 0.0f }, color);
 
-			this->Vertices.push_back(v);
+			this->AddVertex(v);
 			if (i > 1)
 			{
-				this->Indices.insert(this->Indices.end(), { 0, i - 1, i });
+				this->AddIndices({ 0, i - 1, i });
 			}
 		}
 	}
@@ -276,20 +300,20 @@ public:
 		GLPoint v6({ -0.5f, 0.5f, 0.5f }, color);
 		GLPoint v7({ 0.5f, 0.5f, 0.5f }, color);
 
-		this->Vertices.insert(this->Vertices.end(), { v0, v1, v2, v3, v4, v5, v6, v7 });
+		this->AddVertices({ v0, v1, v2, v3, v4, v5, v6, v7 });
 
-		this->Indices.insert(this->Indices.end(), { 2, 1, 0 });
-		this->Indices.insert(this->Indices.end(), { 1, 2, 3 });
-		this->Indices.insert(this->Indices.end(), { 4, 5, 6 });
-		this->Indices.insert(this->Indices.end(), { 7, 6, 5 });
-		this->Indices.insert(this->Indices.end(), { 4, 2, 0 });
-		this->Indices.insert(this->Indices.end(), { 2, 4, 6 });
-		this->Indices.insert(this->Indices.end(), { 1, 3, 5 });
-		this->Indices.insert(this->Indices.end(), { 7, 5, 3 });
-		this->Indices.insert(this->Indices.end(), { 0, 1, 4 });
-		this->Indices.insert(this->Indices.end(), { 5, 4, 1 });
-		this->Indices.insert(this->Indices.end(), { 6, 3, 2 });
-		this->Indices.insert(this->Indices.end(), { 3, 6, 7 });
+		this->AddIndices({ 2, 1, 0 });
+		this->AddIndices({ 1, 2, 3 });
+		this->AddIndices({ 4, 5, 6 });
+		this->AddIndices({ 7, 6, 5 });
+		this->AddIndices({ 4, 2, 0 });
+		this->AddIndices({ 2, 4, 6 });
+		this->AddIndices({ 1, 3, 5 });
+		this->AddIndices({ 7, 5, 3 });
+		this->AddIndices({ 0, 1, 4 });
+		this->AddIndices({ 5, 4, 1 });
+		this->AddIndices({ 6, 3, 2 });
+		this->AddIndices({ 3, 6, 7 });
 	}
 };
 
@@ -320,14 +344,14 @@ public:
 
 				GLPoint v({ glm::cos(rads) * ringRadius, ringY, glm::sin(rads) * ringRadius }, color);
 
-				this->Vertices.push_back(v);
+				this->AddVertex(v);
 
 				unsigned int nextSegment = (segment + 1) % segments;
 
 				if (ring < rings - 1)
 				{
-					this->Indices.insert(this->Indices.end(), { indexOffset + segment, indexOffset + nextSegment, nextIndexOffset + segment });
-					this->Indices.insert(this->Indices.end(), { nextIndexOffset + segment, indexOffset + nextSegment, nextIndexOffset + nextSegment });
+					this->AddIndices({ indexOffset + segment, indexOffset + nextSegment, nextIndexOffset + segment });
+					this->AddIndices({ nextIndexOffset + segment, indexOffset + nextSegment, nextIndexOffset + nextSegment });
 				}
 			}
 		}
@@ -337,12 +361,12 @@ public:
 
 		unsigned int indexOffset = this->Vertices.size();
 
-		this->Vertices.insert(this->Vertices.end(), { bottom, top });
+		this->AddVertices({ bottom, top });
 
 		for (unsigned int segment = 0; segment < segments; ++segment)
 		{
-			this->Indices.insert(this->Indices.end(), { indexOffset - segment - 1, indexOffset, indexOffset - (segment + 1) % segments - 1 });
-			this->Indices.insert(this->Indices.end(), { segment, indexOffset + 1, (segment + 1) % segments });
+			this->AddIndices({ indexOffset - segment - 1, indexOffset, indexOffset - (segment + 1) % segments - 1 });
+			this->AddIndices({ segment, indexOffset + 1, (segment + 1) % segments });
 		}
 	}
 };
@@ -370,7 +394,7 @@ public:
 
 		GLPoint top({ 0.0f, 0.5f, 0.0f }, color);
 
-		this->Vertices.push_back(top);
+		this->AddVertex(top);
 
 		for (unsigned int i = 0; i < vertices; ++i)
 		{
@@ -378,18 +402,18 @@ public:
 
 			GLPoint v({ glm::cos(rads) * radius, -0.5f, glm::sin(rads) * radius }, color);
 
-			this->Vertices.push_back(v);
+			this->AddVertex(v);
 
 			if (i > 0)
 			{
-				this->Indices.insert(this->Indices.end(), { i, 0, i + 1 });
+				this->AddIndices({ i, 0, i + 1 });
 			}
 			if (i > 1)
 			{
-			    this->Indices.insert(this->Indices.end(), { 1, i, i + 1 });
+			    this->AddIndices({ 1, i, i + 1 });
 			}
 		}
-		this->Indices.insert(this->Indices.end(), { 0, 1, vertices });
+		this->AddIndices({ 0, 1, vertices });
 	}
 };
 
@@ -409,14 +433,14 @@ public:
 			GLPoint bottom({ glm::cos(rads) * radius, -0.5f, glm::sin(rads) * radius }, color);
 			GLPoint top({ glm::cos(rads) * radius, 0.5f, glm::sin(rads) * radius }, color);
 
-			this->Vertices.insert(this->Vertices.end(), { bottom, top });
+			this->AddVertices({ bottom, top });
 
 			unsigned int next = (i + 1) % vertices;
 
-			this->Indices.insert(this->Indices.end(), { 0, i * 2, next * 2 });
-			this->Indices.insert(this->Indices.end(), { next * 2 + 1, i * 2 + 1, 1 });
-			this->Indices.insert(this->Indices.end(), { i * 2, i * 2 + 1, next * 2 });
-			this->Indices.insert(this->Indices.end(), { next * 2 + 1, next * 2, i * 2 + 1 });
+			this->AddIndices({ 0, i * 2, next * 2 });
+			this->AddIndices({ next * 2 + 1, i * 2 + 1, 1 });
+			this->AddIndices({ i * 2, i * 2 + 1, next * 2 });
+			this->AddIndices({ next * 2 + 1, next * 2, i * 2 + 1 });
 		}
 	}
 };
