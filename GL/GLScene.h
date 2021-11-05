@@ -63,11 +63,19 @@ public:
 			this->Root->Update(this->FixedUpdateTimeStep);
 
 			this->TimeStepAccumulator -= this->FixedUpdateTimeStep;
+		}
 	}
 
 	void Render(const glm::vec2& windowSize)
 	{
-		for (auto& camera : this->Cameras)
+		std::sort(this->Cameras.begin(), this->Cameras.end(),
+			[](const GLSharedPtr<GCamera>& a, const GLSharedPtr<GCamera>& b)
+			{
+				return a->GetOrder() < b->GetOrder();
+			}
+		);
+
+		for (const auto& camera : this->Cameras)
 		{
 			if (camera->IsActive())
 			{
@@ -81,6 +89,7 @@ public:
 				int height = cameraViewportSize.y * windowSize.y;
 
 				glViewport(x, y, width, height);
+				glClear(GL_DEPTH_BUFFER_BIT);
 
 				this->Root->Render(camera->GetLayer(), camera->GetCameraMatrix());
 			}
@@ -96,8 +105,9 @@ public:
 	}
 
 	GLSharedPtr<GLGameObject> Root;
-    std::vector<GLSharedPtr<GCamera>> Cameras;
+	std::vector<GLSharedPtr<GCamera>> Cameras;
 
+protected:
 	std::string Name;
 	GLColor Background;
 
