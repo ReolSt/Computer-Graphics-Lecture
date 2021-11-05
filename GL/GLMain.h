@@ -146,7 +146,9 @@ void __GLUpdateScene()
 	auto& window = GLCurrentWindow();
 	auto& scene = GLCurrentScene();
 
-	glClearColor(scene->Background.r, scene->Background.g, scene->Background.b, scene->Background.a);
+	auto BackgroundColor = scene->GetBackgroudColor();
+
+	glClearColor(BackgroundColor.r, BackgroundColor.g, BackgroundColor.b, BackgroundColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	scene->Update(deltaTime);

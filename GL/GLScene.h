@@ -78,12 +78,21 @@ public:
 				this->Root->Render(camera->GetLayer(), camera->GetCameraMatrix());
 			}
 		}
+	void SetBackgroundColor(const GLColor& color)
+	{
+		this->Background = color;
+	}
+
+	GLColor GetBackgroudColor()
+	{
+		return this->Background;
 	}
 
 	GLSharedPtr<GLGameObject> Root;
     std::vector<GLSharedPtr<GCamera>> Cameras;
 
 	std::string Name;
+	GLColor Background;
 
 	GLColor Background;
 };
