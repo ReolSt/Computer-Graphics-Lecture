@@ -92,8 +92,11 @@ public:
 				glClear(GL_DEPTH_BUFFER_BIT);
 
 				this->Root->Render(camera->GetLayer(), camera->GetCameraMatrix());
+				this->Physics->Render(camera->GetCameraMatrix());
 			}
 		}
+	}
+
 	void SetBackgroundColor(const GLColor& color)
 	{
 		this->Background = color;
@@ -104,6 +107,7 @@ public:
 		return this->Background;
 	}
 
+	GLSharedPtr<GLPhysics> Physics;
 	GLSharedPtr<GLGameObject> Root;
 	std::vector<GLSharedPtr<GCamera>> Cameras;
 
