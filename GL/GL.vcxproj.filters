@@ -18,12 +18,6 @@
     <ClInclude Include="GLCamera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="GLCollider.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GLCollision.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="GLColor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -46,9 +40,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GLMeshRenderer.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GLPhysicsManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GLPoint.h">
@@ -79,6 +70,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GLPrimitiveObjects.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GLPhysics.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
