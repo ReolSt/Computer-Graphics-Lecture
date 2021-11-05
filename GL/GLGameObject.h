@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include <reactphysics3d/reactphysics3d.h>
+
 #include "GLMemoryHelpers.h"
 #include "GLShader.h"
 #include "GLTransform.h"
@@ -125,6 +127,8 @@ public:
 			return;
 		}
 
+		this->Transform->Update();
+
 		for (auto& child : this->Children)
 		{
 			child->Render(layer, cameraMatrix);
@@ -132,7 +136,7 @@ public:
 
 		if (this->MeshRenderer != nullptr)
 		{
-			this->MeshRenderer->Render(cameraMatrix * this->Transform->LocalToWorldMatrix());
+			this->MeshRenderer->Render(this->Transform->LocalToWorldMatrix, cameraMatrix);
 		}
 	}
 
@@ -143,15 +147,11 @@ public:
 
 	void SetParent(const GLSharedPtr<GLTransform>& parent)
 	{
-		this->Transform->Parent = parent;
+		this->Transform->SetParent(parent);
 
 		if (parent != nullptr)
 		{
 			this->Scene = parent->GameObject->Scene;
-		}
-		else
-		{
-			this->Scene = nullptr;
 		}
 	}
 
