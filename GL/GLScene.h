@@ -55,7 +55,14 @@ public:
 
 	void Update(float deltaTime)
 	{
-		this->Root->Update(deltaTime);
+		this->TimeStepAccumulator += deltaTime;
+
+		while (this->TimeStepAccumulator >= this->FixedUpdateTimeStep)
+		{
+			this->Physics->Update(this->FixedUpdateTimeStep);
+			this->Root->Update(this->FixedUpdateTimeStep);
+
+			this->TimeStepAccumulator -= this->FixedUpdateTimeStep;
 	}
 
 	void Render(const glm::vec2& windowSize)
@@ -94,5 +101,6 @@ public:
 	std::string Name;
 	GLColor Background;
 
-	GLColor Background;
+	float FixedUpdateTimeStep = 0.02f;
+	float TimeStepAccumulator = 0.0f;
 };
