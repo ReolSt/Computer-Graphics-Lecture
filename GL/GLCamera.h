@@ -57,6 +57,16 @@ public:
 		this->ViewportSize.y = y;
 	}
 
+	int GetOrder()
+	{
+		return this->Order;
+	}
+
+	void SetOrder(int order)
+	{
+		this->Order = order;
+	}
+
 	bool IsActive()
 	{
 		return this->bIsActive;
@@ -69,8 +79,8 @@ public:
 
 	virtual glm::mat4 GetViewMatrix()
 	{
-		glm::mat4 rotationMatrix = glm::toMat4(glm::inverse(this->Transform->GetRotation()));
-		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -this->Transform->GetPosition());
+		glm::mat4 rotationMatrix = glm::toMat4(glm::inverse(this->Transform->Rotation));
+		glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), -this->Transform->Position);
 
 		return rotationMatrix * translationMatrix;
 	}
@@ -86,6 +96,7 @@ protected:
 	glm::vec2 ViewportPosition = glm::vec2(0.0f, 0.0f);
 	glm::vec2 ViewportSize = glm::vec2(1.0f, 1.0f);
 
+	int Order = 0;
 	bool bIsActive = false;
 };
 
