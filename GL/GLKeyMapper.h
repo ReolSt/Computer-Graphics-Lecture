@@ -48,35 +48,47 @@ class GLKeyMapper
 public:
 	GLKeyMapper()
 	{
-		for (char ch = 32; ch < 127; ++ch)
+		for (char ch = 1; ch < 127; ++ch)
 		{
-			std::string key_string = std::string(1, ch);
+			std::string keyString = std::string(1, ch);
 
-			if (ch == 9)
+			if (ch == 8)
 			{
-				key_string = "Tab";
+				keyString = "Backspace";
+			}
+			else if (ch == 9)
+			{
+				keyString = "Tab";
+			}
+			else if (ch == 13)
+			{
+				keyString = "Enter";
 			}
 			else if (ch == ' ')
 			{
-				key_string = "Space";
+				keyString = "Space";
+			}
+			else if (ch < 32)
+			{
+				continue;
 			}
 
-			this->key_mapper[ch] = key_string;
-			this->keycode_mapper[key_string] = ch;
+			this->KeyMapper[ch] = keyString;
+			this->KeycodeMapper[keyString] = ch;
 		}
 	}
 
 	std::string operator[](const int& key)
 	{
-		return this->key_mapper[key];
+		return this->KeyMapper[key];
 	}
 
 	int operator[](const std::string& key)
 	{
-		return this->keycode_mapper[key];
+		return this->KeycodeMapper[key];
 	}
 
-	std::unordered_map<int, std::string> key_mapper =
+	std::unordered_map<int, std::string> KeyMapper =
 	{
 		GLKeyMap(GLKeyUp, "Up"),
 		GLKeyMap(GLKeyDown, "Down"),
@@ -113,7 +125,7 @@ public:
 		GLKeyMap(GLKeyRepeatOn, "RepeatOn")
 	};
 
-	std::unordered_map<std::string, int> keycode_mapper =
+	std::unordered_map<std::string, int> KeycodeMapper =
 	{
 		GLKeycodeMap("Up", GLKeyUp),
 		GLKeycodeMap("DOWN", GLKeyDown),
