@@ -11,10 +11,13 @@
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
 
+#include <reactphysics3d/reactphysics3d.h>
+
 #include "GLMemoryHelpers.h"
 #include "GLColor.h"
 #include "GLGameObject.h"
 #include "GLCamera.h"
+#include "GLPhysics.h"
 
 class GLScene
 {
@@ -25,6 +28,8 @@ public:
 	{
 		this->Root = GCreate(GLGameObject);
 		this->Root->Scene = GLSharedPtr<GLScene>(this);
+
+		this->Physics = GLCreate<GLPhysics>();
 	}
 
 	virtual ~GLScene() { }
